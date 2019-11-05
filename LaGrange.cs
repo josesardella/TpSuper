@@ -12,8 +12,9 @@ namespace Lagrange
             int cantidadElementos = 3; //CALCULE SOLO
             double[] abscisas = { 1, 2, 3 };
             double[] ordenada = { 3, 7, 13 };
-            double incognita= 2; //el valor para verificar el polinomio
+            double incognita = 7; //el valor para verificar el polinomio
             double resultado = 0;
+            //el polinomio que pusimos de ejemplo es x^2 + x + 1
             //int[] lx = new int[cantidadElementos];//no sirve
             int i = 0;
 
@@ -32,9 +33,9 @@ namespace Lagrange
                 }
                 //Printeamos los L
                 Console.WriteLine("L es: " + L + " en x = " + abscisas[i]);
-                Console.WriteLine("P(x)= " + resultado +" + ( " + L + " *  " + ordenada[i] + ") ");
+                Console.WriteLine("P(x)= " + resultado + " + ( " + L + " *  " + ordenada[i] + ") ");
                 resultado = resultado + (L * ordenada[i]);
-                
+
                 i++;
             }
             Console.WriteLine("El resultado es: " + resultado);

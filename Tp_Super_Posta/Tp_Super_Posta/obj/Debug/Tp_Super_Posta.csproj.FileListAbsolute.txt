@@ -1,0 +1,10 @@
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\bin\Debug\Tp_Super_Posta.exe.config
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\bin\Debug\Tp_Super_Posta.exe
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\bin\Debug\Tp_Super_Posta.pdb
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\obj\Debug\Tp_Super_Posta.csprojAssemblyReference.cache
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\obj\Debug\Tp_Super_Posta.Properties.Resources.resources
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\obj\Debug\Tp_Super_Posta.csproj.GenerateResource.cache
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\obj\Debug\Tp_Super_Posta.csproj.CoreCompileInputs.cache
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\obj\Debug\Tp_Super_Posta.exe
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\obj\Debug\Tp_Super_Posta.pdb
+C:\Users\franchupedu\source\repos\Tp_Super_Posta\Tp_Super_Posta\obj\Debug\Tp_Super_Posta.Interpolador.resources

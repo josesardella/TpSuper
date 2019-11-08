@@ -47,37 +47,38 @@ namespace Tp_Super_Posta
             //}
         }
 
-        private void LaGrange(double k)
+        private void LaGrange()
         {
             //FALTA HACER QUE LA PERSONA INGRESE LOS PUNTOS POR PANTALLA
             int cantidadElementos = Abscisas.Count; //CALCULE SOLO
-            double incognita = k; //el valor para verificar el polinomio
-            double resultado = 0;
+            //double incognita = k; //el valor para verificar el polinomio
+            //double resultado = 0;
             //el polinomio que pusimos de ejemplo es x^2 + x + 1
             //int[] lx = new int[cantidadElementos];//no sirve
             int i = 0;
-
+            string String = "0";
+            string Strin2 = "";
 
             while (i < cantidadElementos)
             {
                 int j = 0;
-                double L = 1;
+                //double L = 1;
                 while (j < cantidadElementos)
                 {
                     if (i != j)
                     {
-                        L = L * ((incognita - Abscisas[j]) / (Abscisas[i] - Abscisas[j]));
+                        Strin2 = Strin2 + "[(x - " + Abscisas[j] + ") / (" + Abscisas[i] + " - " + Abscisas[j] + ")] ";
                     }
                     j++;
                 }
                 //Printeamos los L
-                label12.Text = label12.Text + "\n" + "L es: " + L + " en x = " + Abscisas[i] + "P(x)= " + resultado + " + ( " + L + " *  " + Ordenadas[i] + ") ";
-                resultado = resultado + (L * Ordenadas[i]);
+                String = String + " + " + Ordenadas[i] + " * " + Strin2;
+                label12.Text = label12.Text + "\n" + "L" + i + " es: " + Strin2;
+                Strin2 = "";
 
                 i++;
             }
-            label13.Text = "Polinomio:\n" + "El resultado es: " + resultado;
-            //Console.ReadKey();
+            label13.Text = "Polinomio:\n" + "P(x) = " + String;
         }
 
         static double calculoDeU(double u, int n)
@@ -110,18 +111,18 @@ namespace Tp_Super_Posta
         private void button2_Click(object sender, EventArgs e)
         {
             label12.Text = "Pasos:";
-            label13.Text = "Resultado:";
+            label13.Text = "Polinomio:";
             if (radioButton4.Checked)
             {
-                LaGrange(Convert.ToDouble(textBox4.Text));
+                LaGrange();
             }
             else if (radioButton5.Checked)
             {
-                NGP(Convert.ToDouble(textBox4.Text));
+                NGP();
             }
             else if (radioButton6.Checked)
             {
-                NGR(Convert.ToDouble(textBox4.Text));
+                NGR();
             }
         }
 
@@ -169,7 +170,17 @@ namespace Tp_Super_Posta
 
         }
 
-        private void NGP(double k)
+        private void NGP()
+        {
+
+        }
+
+        private void NGR()
+        {
+
+        }
+
+        private void NGPReemplazado(double k)
         {
             // Los puntos ha interpolar
             int n = Abscisas.Count;
@@ -184,7 +195,7 @@ namespace Tp_Super_Posta
 
             // Calculo de las diferencias respecto a y
             // tabla
-            label12.Text = label12.Text + '\n';
+            label12.Text = label12.Text + " (Diferencias de f(x))\n";
             for (int i = 1; i < n; i++)
             {
                 for (int j = 0; j < n - i; j++)
@@ -216,11 +227,11 @@ namespace Tp_Super_Posta
                                         factorial(i);
             }
 
-            label13.Text = label13.Text + "\n El valor de " + incognita + " es " + Math.Round(sum, 6);
+            label13.Text = label13.Text + "\n El valor de " + incognita + " es " + Math.Round(sum, n);
             //Console.ReadKey();
         }
 
-        public void NGR(double k)
+        public void NGRReemplazado(double k)
         {
             // Los puntos ha interpolar
             int n = Abscisas.Count;
@@ -234,7 +245,7 @@ namespace Tp_Super_Posta
             }
 
             // Calculo de las diferencias respecto a y
-            label12.Text = label12.Text + '\n';
+            label12.Text = label12.Text + " (Diferencias de f(x))\n";
             for (int i = 1; i < n; i++)
             {
                 for (int j = n - 1; j >= i; j--)
@@ -253,13 +264,13 @@ namespace Tp_Super_Posta
             // Usa la u y el factorial
             double sum = y[n - 1, 0];
             double u = (incognita - Abscisas[n - 1]) / (Abscisas[1] - Abscisas[0]);
-            for (int i = 1; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
                 sum = sum + (calculoDeU(u, i) * y[n - 1, i]) /
                                             factorial(i);
             }
 
-            label13.Text = label13.Text + "\n El valor de " + incognita + " es " + Math.Round(sum, 6);
+            label13.Text = label13.Text + "\n El valor de " + incognita + " es " + Math.Round(sum, n);
             //Console.ReadKey();
         }
 
@@ -286,6 +297,51 @@ namespace Tp_Super_Posta
         private void textBox4_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (radioButton4.Checked)
+            {
+                LaGrangeReemplazado(Convert.ToDouble(textBox4.Text));
+            }
+            else if (radioButton5.Checked)
+            {
+                NGPReemplazado(Convert.ToDouble(textBox4.Text));
+            }
+            else if (radioButton6.Checked)
+            {
+                NGRReemplazado(Convert.ToDouble(textBox4.Text));
+            }
+        }
+
+        public void LaGrangeReemplazado(double k)
+        {
+            //FALTA HACER QUE LA PERSONA INGRESE LOS PUNTOS POR PANTALLA
+            int cantidadElementos = Abscisas.Count; //CALCULE SOLO
+            double incognita = k; //el valor para verificar el polinomio
+            double resultado = 0;
+            //el polinomio que pusimos de ejemplo es x^2 + x + 1
+            //int[] lx = new int[cantidadElementos];//no sirve
+            int i = 0;
+            while (i < cantidadElementos)
+            {
+                int j = 0;
+                double L = 1;
+                while (j < cantidadElementos)
+                {
+                    if (i != j)
+                    {
+                        L = L * ((incognita - Abscisas[j]) / (Abscisas[i] - Abscisas[j]));
+                    }
+                    j++;
+                }
+                //Printeamos los resultados
+                resultado = resultado + (L * Ordenadas[i]);
+
+                i++;
+            }
+            label13.Text = label13.Text + '\n' + "El resultado:\n" + "P(" + incognita + ") = " + resultado;
         }
     }
 }

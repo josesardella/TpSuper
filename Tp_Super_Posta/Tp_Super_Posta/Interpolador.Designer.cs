@@ -276,6 +276,7 @@
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Name = "Interpolador";
+            this.Load += new System.EventHandler(this.Interpolador_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

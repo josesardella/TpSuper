@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Tp_Super_Posta
 {
@@ -18,6 +19,23 @@ namespace Tp_Super_Posta
         public Interpolador()
         {
             InitializeComponent();
+        }
+
+        public void Interpolador_KeyPress(object sender, KeyPressEventArgs Tecla)
+        {
+            if (Tecla.KeyChar == 6)
+            {
+                radioButton6.Checked = true;
+
+                if (textBox2.SelectionStart == 0)
+                    textBox1.SelectionStart = 0;
+
+                else if (textBox1.SelectionStart == 0)
+                    textBox2.SelectionStart = 0;
+
+                else
+                    textBox2.SelectionStart = 0;
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs fila)
@@ -128,7 +146,7 @@ namespace Tp_Super_Posta
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -172,12 +190,70 @@ namespace Tp_Super_Posta
 
         private void NGP()
         {
+            int n = Abscisas.Count;
 
+            double[,] y = new double[n, n];
+
+            for (int i = 0; i < n; i++)
+                y[i, 0] = Ordenadas[i];
+
+            label12.Text = label12.Text + "\n";
+
+            for (int i = 1; i < n; i++)
+            {
+                for (int j = 0; j < n - i; j++)
+                {
+                    y[j, i] = (y[j + 1, i - 1] - y[j, i - 1]) / (Abscisas[i + j] - Abscisas[j]);
+
+                    label12.Text = label12.Text + y[j, i] + " ";
+                }
+
+                label12.Text = label12.Text + '\n';
+            }
+
+            label13.Text = label13.Text + "\nP(x) = 0";
+
+            for (int i = n - 1; i >= 0; i--)
+            {
+                label13.Text = label13.Text + " + " + y[0, n - i - 1];
+
+                for (int j = n - 1; j > i; j--)
+                    label13.Text = label13.Text + "(x - " + Abscisas[n - j - 1] + ")";
+            }
         }
 
         private void NGR()
         {
+            int n = Abscisas.Count;
 
+            double[,] y = new double[n, n];
+
+            for (int i = 0; i < n; i++)
+                y[i, 0] = Ordenadas[i];
+
+            label12.Text = label12.Text + "\n";
+
+            for (int i = 1; i < n; i++)
+            {
+                for (int j = 0; j < n - i; j++)
+                {
+                    y[j, i] = (y[j + 1, i - 1] - y[j, i - 1]) / (Abscisas[i + j] - Abscisas[j]);
+
+                    label12.Text = label12.Text + y[j, i] + " ";
+                }
+
+                label12.Text = label12.Text + '\n';
+            }
+
+            label13.Text = label13.Text + "\nP(x) = 0";
+
+            for (int i = n - 1; i >= 0; i--)
+            {
+                label13.Text = label13.Text + " + " + y[i, n - i - 1];
+
+                for (int j = n - 1; j > i; j--)
+                    label13.Text = label13.Text + "(x - " + Abscisas[j] + ")";
+            }
         }
 
         private void NGPReemplazado(double k)
@@ -195,15 +271,12 @@ namespace Tp_Super_Posta
 
             // Calculo de las diferencias respecto a y
             // tabla
-            label12.Text = label12.Text + " (Diferencias de f(x))\n";
             for (int i = 1; i < n; i++)
             {
                 for (int j = 0; j < n - i; j++)
                 {
                     y[j, i] = (y[j + 1, i - 1] - y[j, i - 1]);/// (Abscisas[i + j] - Abscisas[j]);
-                    label12.Text = label12.Text + y[j, i] + " ";
                 }
-                label12.Text = label12.Text + '\n';
             }
 
             // Muestra la tabla de los puntos y las diferencias con y
@@ -227,8 +300,16 @@ namespace Tp_Super_Posta
                                         factorial(i);
             }
 
-            label13.Text = label13.Text + "\n El valor de " + incognita + " es " + Math.Round(sum, n);
+            label13.Text = label13.Text + "\nEl resultado:\n" + "P(" + incognita + ") = " + Math.Round(sum, n);
             //Console.ReadKey();
+        }
+
+        static double calculoDeUR(double u, int n)
+        {
+            double temp = u;
+            for (int i = 1; i < n; i++)
+                temp = temp * (u + i);
+            return temp;
         }
 
         public void NGRReemplazado(double k)
@@ -245,15 +326,12 @@ namespace Tp_Super_Posta
             }
 
             // Calculo de las diferencias respecto a y
-            label12.Text = label12.Text + " (Diferencias de f(x))\n";
             for (int i = 1; i < n; i++)
             {
                 for (int j = n - 1; j >= i; j--)
                 {
                     y[j, i] = (y[j, i - 1] - y[j - 1, i - 1]);/// (Abscisas[i + j] - Abscisas[j]);
-                    label12.Text = label12.Text + y[j, i] + " ";
                 }
-                label12.Text = label12.Text + '\n';
             }
 
             // Muestra la tabla de los puntos y las diferencias con y
@@ -264,13 +342,13 @@ namespace Tp_Super_Posta
             // Usa la u y el factorial
             double sum = y[n - 1, 0];
             double u = (incognita - Abscisas[n - 1]) / (Abscisas[1] - Abscisas[0]);
-            for (int i = 0; i < n; i++)
+            for (int i = 1; i < n; i++)
             {
-                sum = sum + (calculoDeU(u, i) * y[n - 1, i]) /
+                sum = sum + (calculoDeUR(u, i) * y[n - 1, i]) /
                                             factorial(i);
             }
 
-            label13.Text = label13.Text + "\n El valor de " + incognita + " es " + Math.Round(sum, n);
+            label13.Text = label13.Text + "\nEl resultado:\n" + "P(" + incognita + ") = " + Math.Round(sum, n);
             //Console.ReadKey();
         }
 
@@ -342,6 +420,11 @@ namespace Tp_Super_Posta
                 i++;
             }
             label13.Text = label13.Text + '\n' + "El resultado:\n" + "P(" + incognita + ") = " + resultado;
+        }
+
+        private void Interpolador_Load(object sender, EventArgs e)
+        {
+            
         }
     }
 }

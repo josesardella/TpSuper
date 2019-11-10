@@ -15,6 +15,10 @@ namespace Tp_Super_Posta
     {
         List<double> Abscisas = new List<double>();
         List<double> Ordenadas = new List<double>();
+        bool lg = false;
+        bool ngp = false;
+        bool ngr = false;
+        bool eqesp = false;
 
         public Interpolador()
         {
@@ -77,6 +81,8 @@ namespace Tp_Super_Posta
             string String = "0";
             string Strin2 = "";
 
+            label12.Text = label12.Text + " G(P) = " + cantidadElementos;
+
             while (i < cantidadElementos)
             {
                 int j = 0;
@@ -96,7 +102,8 @@ namespace Tp_Super_Posta
 
                 i++;
             }
-            label13.Text = "Polinomio:\n" + "P(x) = " + String;
+            if (i > 0)
+                label13.Text = "Polinomio:\n" + "P(x) = " + String;
         }
 
         static double calculoDeU(double u, int n)
@@ -129,18 +136,23 @@ namespace Tp_Super_Posta
         private void button2_Click(object sender, EventArgs e)
         {
             label12.Text = "Pasos:";
+
             label13.Text = "Polinomio:";
+
             if (radioButton4.Checked)
             {
                 LaGrange();
+                lg = true;
             }
             else if (radioButton5.Checked)
             {
                 NGP();
+                ngp = true;
             }
             else if (radioButton6.Checked)
             {
                 NGR();
+                ngr = true;
             }
         }
 
@@ -149,27 +161,55 @@ namespace Tp_Super_Posta
             
         }
 
+        private bool i (char caracter)
+        {
+            if (caracter == '0' || caracter == '1' || caracter == '2' || caracter == '3' || caracter == '4' || caracter == '5' || caracter == '6' || caracter == '7' || caracter == '8' || caracter == '9')
+                return true;
+            return false;
+        }
+
+        private bool digito (char caracter)
+        {
+            if (caracter == '0' || caracter == '1' || caracter == '2' || caracter == '3' || caracter == '4' || caracter == '5' || caracter == '6' || caracter == '7' || caracter == '8' || caracter == '9' || caracter == '.')
+                return true;
+            return false;
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             if (textBox3.Text == "(opcional)" || textBox3.Text == "")
             {
-                int n = dataGridView2.Rows.Add();
-                dataGridView2.Rows[n].Cells[0].Value = Convert.ToDouble(textBox2.Text);
-                dataGridView2.Rows[n].Cells[1].Value = Convert.ToDouble(textBox1.Text);
-                Abscisas.Add(Convert.ToDouble(textBox2.Text));
-                Ordenadas.Add(Convert.ToDouble(textBox1.Text));
-                textBox1.Text = "";
-                textBox2.Text = "";
+                if (textBox1.Text.All(caracter => digito(caracter)) && textBox1.Text != "" && textBox2.Text.All(caracter => digito(caracter)) && textBox2.Text != "")
+                {
+                    int n = dataGridView2.Rows.Add();
+                    dataGridView2.Rows[n].Cells[0].Value = Convert.ToDouble(textBox2.Text);
+                    dataGridView2.Rows[n].Cells[1].Value = Convert.ToDouble(textBox1.Text);
+                    Abscisas.Add(Convert.ToDouble(textBox2.Text));
+                    Ordenadas.Add(Convert.ToDouble(textBox1.Text));
+                    textBox1.Text = "";
+                    textBox2.Text = "";
+                    label12.Text = "Pasos:";
+                }
+
+                else
+                    label12.Text = "Ingrese campos válidos";
             }
             else
             {
-                dataGridView2.Rows[Convert.ToInt32(textBox3.Text)].Cells[0].Value = Convert.ToDouble(textBox2.Text);
-                dataGridView2.Rows[Convert.ToInt32(textBox3.Text)].Cells[1].Value = Convert.ToDouble(textBox1.Text);
-                Abscisas[Convert.ToInt32(textBox3.Text)] = Convert.ToDouble(textBox2.Text);
-                Ordenadas[Convert.ToInt32(textBox3.Text)] = Convert.ToDouble(textBox1.Text);
-                textBox1.Text = "";
-                textBox2.Text = "";
-                textBox3.Text = "";
+                if (textBox1.Text.All(caracter => digito(caracter)) && textBox1.Text != "" && textBox2.Text.All(caracter => digito(caracter)) && textBox2.Text != "" && textBox3.Text.All(caracter => i(caracter)) && Convert.ToDouble(textBox3.Text) < Abscisas.Count && Convert.ToDouble(textBox3.Text) >= 0)
+                {
+                    dataGridView2.Rows[Convert.ToInt32(textBox3.Text)].Cells[0].Value = Convert.ToDouble(textBox2.Text);
+                    dataGridView2.Rows[Convert.ToInt32(textBox3.Text)].Cells[1].Value = Convert.ToDouble(textBox1.Text);
+                    Abscisas[Convert.ToInt32(textBox3.Text)] = Convert.ToDouble(textBox2.Text);
+                    Ordenadas[Convert.ToInt32(textBox3.Text)] = Convert.ToDouble(textBox1.Text);
+                    textBox1.Text = "";
+                    textBox2.Text = "";
+                    textBox3.Text = "";
+                    label12.Text = "Pasos:";
+                }
+
+                else
+                    label12.Text = "Ingrese campos válidos";
             }
         }
 
@@ -190,7 +230,34 @@ namespace Tp_Super_Posta
 
         private void NGP()
         {
+            eqesp = true;
+
             int n = Abscisas.Count;
+
+            if (n == 0)
+                return;
+
+            if (n == 1)
+            {
+                label12.Text = label12.Text + "\n" + Ordenadas[0];
+
+                label13.Text = label13.Text + "\nP(x) = 0 + " + Ordenadas[0];
+
+                return;
+            }
+
+            double esp = Abscisas[1] - Abscisas[0];
+
+            for (int i = 1; i < n; i++)
+            {
+                if (esp != Abscisas[i] - Abscisas[i - 1])
+                    eqesp = false;
+            }
+
+            if (!eqesp)
+                label12.Text = label12.Text + " (Los puntos no son equiespaciados)";
+
+            label12.Text = label12.Text + " G(P) = " + n;
 
             double[,] y = new double[n, n];
 
@@ -226,6 +293,31 @@ namespace Tp_Super_Posta
         {
             int n = Abscisas.Count;
 
+            if (n == 0)
+                return;
+
+            if (n == 1)
+            {
+                label12.Text = label12.Text + "\n" + Ordenadas[0];
+
+                label13.Text = label13.Text + "\nP(x) = 0 + " + Ordenadas[0];
+
+                return;
+            }
+
+            double esp = Abscisas[1] - Abscisas[0];
+
+            for (int i = 1; i < n; i++)
+            {
+                if (esp != Abscisas[i] - Abscisas[i - 1])
+                    eqesp = false;
+            }
+
+            if (!eqesp)
+                label12.Text = label12.Text + " (Los puntos no son equiespaciados)";
+
+            label12.Text = label12.Text + " G(P) = " + n;
+
             double[,] y = new double[n, n];
 
             for (int i = 0; i < n; i++)
@@ -260,6 +352,16 @@ namespace Tp_Super_Posta
         {
             // Los puntos ha interpolar
             int n = Abscisas.Count;
+
+            if (n == 0)
+                return;
+
+            if (n == 1)
+            {
+                label13.Text = label13.Text + "\nEl resultado:\nP(" + k + ") = " + Ordenadas[0];
+
+                return;
+            }
 
             // y[,] se usa para la tablea
             // y[,0] para el primer valor
@@ -316,6 +418,16 @@ namespace Tp_Super_Posta
         {
             // Los puntos ha interpolar
             int n = Abscisas.Count;
+
+            if (n == 0)
+                return;
+
+            if (n == 1)
+            {
+                label13.Text = label13.Text + "\nEl resultado:\nP(" + k + ") = " + Ordenadas[0];
+
+                return;
+            }
             
             // y[,] se usa para la tablea
             // y[,0] para el primer valor
@@ -379,17 +491,23 @@ namespace Tp_Super_Posta
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (radioButton4.Checked)
+            if (textBox4.Text.All(caracter => digito(caracter)))
             {
-                LaGrangeReemplazado(Convert.ToDouble(textBox4.Text));
-            }
-            else if (radioButton5.Checked)
-            {
-                NGPReemplazado(Convert.ToDouble(textBox4.Text));
-            }
-            else if (radioButton6.Checked)
-            {
-                NGRReemplazado(Convert.ToDouble(textBox4.Text));
+                if (radioButton4.Checked && lg)
+                {
+                    LaGrangeReemplazado(Convert.ToDouble(textBox4.Text));
+                    lg = false;
+                }
+                else if (radioButton5.Checked && ngp)
+                {
+                    NGPReemplazado(Convert.ToDouble(textBox4.Text));
+                    ngp = false;
+                }
+                else if (radioButton6.Checked && ngr)
+                {
+                    NGRReemplazado(Convert.ToDouble(textBox4.Text));
+                    ngr = false;
+                }
             }
         }
 

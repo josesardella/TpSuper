@@ -81,7 +81,7 @@ namespace Tp_Super_Posta
             string String = "0";
             string Strin2 = "";
 
-            label12.Text = label12.Text + " G(P) = " + cantidadElementos;
+            label12.Text = label12.Text + "\nG(P) = " + cantidadElementos;
 
             while (i < cantidadElementos)
             {
@@ -257,7 +257,7 @@ namespace Tp_Super_Posta
             if (!eqesp)
                 label12.Text = label12.Text + " (Los puntos no son equiespaciados)";
 
-            label12.Text = label12.Text + " G(P) = " + n;
+            label12.Text = label12.Text + "\nG(P) = " + n;
 
             double[,] y = new double[n, n];
 
@@ -316,7 +316,7 @@ namespace Tp_Super_Posta
             if (!eqesp)
                 label12.Text = label12.Text + " (Los puntos no son equiespaciados)";
 
-            label12.Text = label12.Text + " G(P) = " + n;
+            label12.Text = label12.Text + "\nG(P) = " + n;
 
             double[,] y = new double[n, n];
 
